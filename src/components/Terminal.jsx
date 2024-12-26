@@ -9,7 +9,8 @@ const Terminal = () => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [welcomeMessage, setWelcomeMessage] = useState(['']);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const terminalRef = useRef(null);
   const inputRef = useRef(null);
   const animationRef = useRef(null);
 
@@ -34,56 +35,71 @@ const Terminal = () => {
     ''
   ];
 
+  // Scroll to bottom whenever history changes
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [history]);
+
+  // Keep input focused
+  useEffect(() => {
+    const focusInput = () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+
+    window.addEventListener('click', focusInput);
+    return () => window.removeEventListener('click', focusInput);
+  }, []);
+
+  // Welcome message animation
   useEffect(() => {
     let startTime = null;
-    let currentIndex = 0;
-    const totalDuration = 4000; // 3 seconds total
+    const totalDuration = 4000;
     
     const animate = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       
-      // Calculate how many characters should be shown by now
-      const totalChars = fullWelcomeMessage.join('\n').length;
-      const charsToShow = Math.floor((progress / totalDuration) * totalChars);
-      
-      if (charsToShow >= totalChars) {
+      if (progress >= totalDuration) {
         setHistory(fullWelcomeMessage);
         return;
       }
       
-      let currentChar = 0;
-      let currentLines = [''];
-      let currentLineIndex = 0;
+      const totalChars = fullWelcomeMessage.join('\n').length;
+      const charsToShow = Math.floor((progress / totalDuration) * totalChars);
       
-      // Build up the message character by character
+      let currentChar = 0;
+      let currentLines = [];
+      
       for (const line of fullWelcomeMessage) {
         if (currentChar + line.length <= charsToShow) {
-          currentLines[currentLineIndex] = line;
-          currentChar += line.length + 1; // +1 for newline
-          currentLineIndex++;
-          currentLines[currentLineIndex] = '';
+          currentLines.push(line);
+          currentChar += line.length + 1;
         } else if (currentChar < charsToShow) {
-          const remainingChars = charsToShow - currentChar;
-          currentLines[currentLineIndex] = line.substring(0, remainingChars);
+          currentLines.push(line.substring(0, charsToShow - currentChar));
           break;
         } else {
           break;
         }
       }
       
-      setWelcomeMessage(currentLines);
+      setHistory(currentLines);
       animationRef.current = requestAnimationFrame(animate);
     };
     
-    animationRef.current = requestAnimationFrame(animate);
+    if (showWelcome) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
     
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [showWelcome]);
 
   const themes = {
     cyberpunk: {
@@ -192,6 +208,7 @@ const Terminal = () => {
       return [`File '${file}' not found`];
     },
     clear: () => {
+      setShowWelcome(false);
       setHistory([]);
       return [];
     },
@@ -262,13 +279,16 @@ const Terminal = () => {
       ? commands[command](...args) 
       : [`Command '${command}' not found. Type 'help' for available commands`];
     
-    if (command === 'open' && args[0] === 'quantageddon.com') {
-      window.open('https://quantageddon.com', '_blank');
-    }
-
     setHistory(prev => [...prev, `${currentPath} $ ${cmd}`, ...output]);
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
+    
+    // Ensure cursor stays visible
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 0);
   };
 
   const handleKeyDown = (e) => {
@@ -279,7 +299,7 @@ const Terminal = () => {
         const args = input.split(' ');
         args[args.length - 1] = matches[0];
         setInput(args.join(' '));
-      } else if (matches.length > 1) {
+      } else if (matches.length > 0) {
         setSuggestions(matches);
         setShowSuggestions(true);
       }
@@ -310,23 +330,13 @@ const Terminal = () => {
   };
 
   return (
-    <div className={`${themes[theme].bg} p-4 font-mono h-screen overflow-y-auto`}>
+    <div 
+      ref={terminalRef}
+      className={`${themes[theme].bg} p-4 font-mono h-screen overflow-y-auto`}
+      onClick={() => inputRef.current?.focus()}
+    >
       <div className="mb-4">
-        {welcomeMessage.map((line, i) => (
-          <div 
-            key={i} 
-            className={`whitespace-pre-wrap ${
-              line.startsWith('~') || line.includes('$') 
-                ? themes[theme].prompt
-                : line.includes('not found') 
-                  ? themes[theme].error 
-                  : themes[theme].text
-            }`}
-          >
-            {line}
-          </div>
-        ))}
-        {history.slice(welcomeMessage.length).map((line, i) => (
+        {history.map((line, i) => (
           <div 
             key={`history-${i}`} 
             className={`whitespace-pre-wrap ${
@@ -341,7 +351,7 @@ const Terminal = () => {
           </div>
         ))}
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center sticky bottom-0">
         <span className={`mr-2 ${themes[theme].prompt}`}>{currentPath} $</span>
         <input
           ref={inputRef}
@@ -349,7 +359,7 @@ const Terminal = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className={`bg-transparent border-none outline-none flex-grow ${themes[theme].text}`}
+          className={`bg-transparent border-none outline-none flex-grow ${themes[theme].text} caret-current`}
           autoFocus
         />
       </div>

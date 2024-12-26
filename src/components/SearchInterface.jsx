@@ -20,7 +20,9 @@ const SearchInterface = (props) => {
   // Handle form submission (search)
   const handleSearch = (e) => {
     e.preventDefault();
-    window.location.href = REDIRECT_URL;
+    if (searchText.toLowerCase() !== 'quantageddon') {
+   
+    window.location.href = REDIRECT_URL;}
   };
 
   // Voice recognition setup
@@ -170,21 +172,14 @@ const SearchInterface = (props) => {
 
                 <div className="flex justify-center mt-8 space-x-3">
                 <button 
-                  onClick={() => window.open("https://www.reddit.com/r/algotrading/top/?t=year", "_blank")} 
-                  className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
-                >
+  onClick={() => window.open("https://www.reddit.com/r/algotrading/top/?t=year", "_blank")} 
+  className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
+>
                     Quant Search
                   </button>
                   <button onClick={() => window.location.href = REDIRECT_URL} className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200">
                     I'm Feeling Lucky
                   </button>
-
-                {/* {showEasterEgg && (
-                  <div className="fixed bottom-6 z-50 left-1/2 transform -translate-x-1/2 text-cyan-500 font-mono animate-pulse space-y-1">
-                    <div>{`> Initialization complete.`}</div>
-                    <div>{`> Welcome to the other side...`}</div>
-                  </div>
-                )} */}
                 </div>
               </div>
             </main>
@@ -246,15 +241,14 @@ const SearchInterface = (props) => {
                   
                   handleGameResponse('play');
                   
-                  glitch.style.transition = 'transform 1s';
                   glitch.style.transform = 'rotateX(90deg)';
-                  invitation.style.transition = 'transform 1s';
+                  invitation.style.transition = 'transform 2s';
                   invitation.style.transform = ' rotateX(-90deg)';
                   
                   // start terminal 
-                  // setTimeout(() => {
+                  setTimeout(() => {
                     props.startTerminal();
-                  // }, 0)
+                  }, 0)
                 }}
                 className="px-4 py-2 bg-cyan-500 text-black font-mono text-sm hover:bg-cyan-400 transition-colors transform hover:scale-105"
               >
@@ -269,9 +263,14 @@ const SearchInterface = (props) => {
             </div>
           </div>
         </div>
-      
       </div>
 
+      {showEasterEgg && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 text-cyan-500 font-mono animate-pulse space-y-1">
+          <div>{`> Initialization complete.`}</div>
+          
+        </div>
+      )}
     </div>
   );
 };
