@@ -133,46 +133,73 @@ const Terminal = () => {
 
 
   const resources = {
-    javascript: {
+    books: {
       type: 'directory',
       content: {
-        'basics.txt': '# JavaScript Fundamentals\n\n- Variables and Data Types\n- Control Flow\n- Functions\n- Objects and Arrays',
-        'advanced.txt': '# Advanced JavaScript\n\n- Closures\n- Promises\n- Async/Await\n- Design Patterns',
-        'frameworks.txt': '# Popular Frameworks\n\n- React\n- Vue\n- Angular\n- Svelte'
+        'quant-basics.txt': '# Essential Quant Books\n\n- "Python for Finance" by Yves Hilpisch\n- "Advances in Financial Machine Learning" by Marcos Lopez de Prado\n- "Machine Learning for Asset Managers" by Marcos Lopez de Prado\n- "Inside the Black Box" by Rishi K. Narang',
+        'math-stats.txt': '# Mathematics & Statistics Books\n\n- "Stochastic Calculus for Finance I & II" by Steven Shreve\n- "Options, Futures, and Other Derivatives" by John Hull\n- "Statistical Inference" by Casella and Berger'
       }
     },
-    python: {
+    tutorials: {
       type: 'directory',
       content: {
-        'getting-started.txt': '# Python Setup Guide\n\n- Installation\n- Virtual Environments\n- Package Management\n- IDE Setup',
-        'data-structures.txt': '# Data Structures\n\n- Lists\n- Dictionaries\n- Sets\n- Tuples',
-        'libraries.txt': '# Essential Libraries\n\n- NumPy\n- Pandas\n- Matplotlib\n- Requests'
+        'video-courses.txt': '# Free Video Resources\n\n- Quantopian Lecture Series on YouTube\n- QuantStart Machine Learning for Trading\n- Two Sigma Financial Modeling Challenge\n- World Quant University Free Courses',
+        'online-platforms.txt': '# Learning Platforms\n\n- Coursera: Financial Engineering and Risk Management\n- edX: Computational Investing\n- Udacity: Artificial Intelligence for Trading\n- DataCamp: Python for Finance'
       }
     },
-    tools: {
+    repositories: {
       type: 'directory',
       content: {
-        'git.txt': '# Git Commands\n\n- git init\n- git add\n- git commit\n- git push',
-        'docker.txt': '# Docker Basics\n\n- Containers\n- Images\n- Docker Compose\n- Networks',
-        'deployment.txt': '# Deployment Options\n\n- Heroku\n- Vercel\n- AWS\n- Digital Ocean'
+        'frameworks.txt': '# Popular Quant Frameworks\n\n- QuantConnect: Open-source algorithmic trading\n- Zipline: Pythonic algorithmic trading\n- Backtrader: Python backtesting library\n- TA-Lib: Technical Analysis Library',
+        'starter-code.txt': '# GitHub Repositories\n\n- google/tf-quant-finance\n- microsoft/qlib\n- enigmampc/catalyst\n- quantopian/research_public'
       }
     }
   };
 
+  // Updated commands object with new quant command
   const commands = {
+    quant: () => [
+      '╔══════════════════ QUANTAGEDDON ══════════════════╗',
+      '║                                                  ║',
+      '║                                                  ║',
+      '║                                                  ║',
+      '╠══════════════════════════════════════════════════╣',
+      '║ Competition Link: xyz                            ║',
+      '║                                                  ║',
+      '║ Kaggle Comp Details:                             ║',
+      '║ • Stock market prediction challenge              ║',
+      '║ • Machine learning-based market analysis         ║',
+      '║                                                  ║',
+      '║ Timeline:                                        ║',
+      '║ Day 1: Kickoff & Dataset Release                 ║',
+      '║ Day 2: Development & Public Leaderboard          ║',
+      '║ Day 3: Feature Engineering Workshop              ║',
+      '║ Day 4: Finals & Winner Announcement              ║',
+      '║                                                  ║',
+      '║ Evaluation:                                      ║',
+      '║ • 80% Model Performance                          ║',
+      '║ • 20% Documentation                              ║',
+      '║                                                  ║',
+      '║ Required Skills:                                 ║',
+      '║ • Python                                         ║',
+      '║ • Financial Analysis                             ║',
+      '║ • Machine Learning                               ║',
+      '║                                                  ║',
+      '║ Type "ls" to explore learning resources          ║',
+      '╚══════════════════════════════════════════════════╝'
+    ],
     help: () => [
-      '┌─ Available Commands ────────────────────┐',
-      '│ ls      - List contents                │',
-      '│ cd      - Change directory             │',
-      '│ cat     - View file contents           │',
-      '│ pwd     - Print working directory      │',
-      '│ clear   - Clear terminal               │',
-      '│ theme   - Change color theme           │',
-      '│ date    - Show current date and time   │',
-      '│ tree    - Show directory structure     │',
-      '│ whoami  - Show current user            │',
-      '│ echo    - Print text                   │',
-      '│ open    - Open website                 │',
+      '┌─ Essential Commands ─────────────────────┐',
+      '│ quant   - View competition details       │',
+      '│ ls      - List available resources       │',
+      '│ cat     - View resource contents         │',
+      '├─ Other Commands ──────────────────────────┤',
+      '│ pwd     - Print working directory        │',
+      '│ clear   - Clear terminal                 │',
+      '│ theme   - Change color theme             │',
+      '│ date    - Show current date and time     │',
+      '│ tree    - Show resource structure        │',
+      '│ whoami  - Show current user              │',
       '└─────────────────────────────────────────┘'
     ],
     ls: () => {
