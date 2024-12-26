@@ -9,29 +9,80 @@ const Terminal = () => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState(['']);
   const inputRef = useRef(null);
+  const animationRef = useRef(null);
+
+  const fullWelcomeMessage = [
+    '',
+    '                Welcome to QuantOS Terminal v1.0.0               ',
+    '════════════════════════════════════════════════════════════════',
+    '                                                                ',
+    ' ██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███████╗',
+    '██╔═══██╗██║   ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗██╔════╝',
+    '██║   ██║██║   ██║███████║██╔██╗ ██║   ██║   ██║   ██║███████╗',
+    '██║▄▄ ██║██║   ██║██╔══██║██║╚██╗██║   ██║   ██║   ██║╚════██║',
+    '╚██████╔╝╚██████╔╝██║  ██║██║ ╚████║   ██║   ╚██████╔╝███████║',
+    ' ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚══════╝',
+    '                                                                ',
+    '════════════════════════════════════════════════════════════════',
+    ' • Type "help" for available commands                           ',
+    ' • Type "theme" to change colors                               ',
+    ' • Running on [CPU: Potato Threadripper] [RAM: 128GB DDR5]       ',
+    ' • Quantum Processing Unit: Active | Qubit Status: Stable      ',
+    '════════════════════════════════════════════════════════════════',
+    ''
+  ];
 
   useEffect(() => {
-    setHistory([
-      '',
-      '                Welcome to QuantOS Terminal v1.0.0               ',
-      '════════════════════════════════════════════════════════════════',
-      '                                                                ',
-      ' ██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███████╗',
-      '██╔═══██╗██║   ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗██╔════╝',
-      '██║   ██║██║   ██║███████║██╔██╗ ██║   ██║   ██║   ██║███████╗',
-      '██║▄▄ ██║██║   ██║██╔══██║██║╚██╗██║   ██║   ██║   ██║╚════██║',
-      '╚██████╔╝╚██████╔╝██║  ██║██║ ╚████║   ██║   ╚██████╔╝███████║',
-      ' ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚══════╝',
-      '                                                                ',
-      '════════════════════════════════════════════════════════════════',
-      ' • Type "help" for available commands                           ',
-      ' • Type "theme" to change colors                               ',
-      ' • Running on [CPU: AMD Threadripper] [RAM: 128GB DDR5]       ',
-      ' • Quantum Processing Unit: Active | Qubit Status: Stable      ',
-      '════════════════════════════════════════════════════════════════',
-      ''
-    ]);
+    let startTime = null;
+    let currentIndex = 0;
+    const totalDuration = 4000; // 3 seconds total
+    
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      
+      // Calculate how many characters should be shown by now
+      const totalChars = fullWelcomeMessage.join('\n').length;
+      const charsToShow = Math.floor((progress / totalDuration) * totalChars);
+      
+      if (charsToShow >= totalChars) {
+        setHistory(fullWelcomeMessage);
+        return;
+      }
+      
+      let currentChar = 0;
+      let currentLines = [''];
+      let currentLineIndex = 0;
+      
+      // Build up the message character by character
+      for (const line of fullWelcomeMessage) {
+        if (currentChar + line.length <= charsToShow) {
+          currentLines[currentLineIndex] = line;
+          currentChar += line.length + 1; // +1 for newline
+          currentLineIndex++;
+          currentLines[currentLineIndex] = '';
+        } else if (currentChar < charsToShow) {
+          const remainingChars = charsToShow - currentChar;
+          currentLines[currentLineIndex] = line.substring(0, remainingChars);
+          break;
+        } else {
+          break;
+        }
+      }
+      
+      setWelcomeMessage(currentLines);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
   }, []);
 
   const themes = {
@@ -211,7 +262,7 @@ const Terminal = () => {
       ? commands[command](...args) 
       : [`Command '${command}' not found. Type 'help' for available commands`];
     
-    if (command === 'open') {
+    if (command === 'open' && args[0] === 'quantageddon.com') {
       window.open('https://quantageddon.com', '_blank');
     }
 
@@ -261,33 +312,34 @@ const Terminal = () => {
   return (
     <div className={`${themes[theme].bg} p-4 font-mono h-screen overflow-y-auto`}>
       <div className="mb-4">
-        {history.map((line, i) => {
-          if (line.includes('Quantageddon.com')) {
-            return (
-              <div key={i} className={themes[theme].text}>
-                <a 
-                  href="https://quantageddon.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="underline hover:text-blue-400"
-                >
-                  {line}
-                </a>
-              </div>
-            );
-          }
-          return (
-            <div key={i} className={`whitespace-pre-wrap ${
+        {welcomeMessage.map((line, i) => (
+          <div 
+            key={i} 
+            className={`whitespace-pre-wrap ${
               line.startsWith('~') || line.includes('$') 
                 ? themes[theme].prompt
                 : line.includes('not found') 
                   ? themes[theme].error 
                   : themes[theme].text
-            }`}>
-              {line}
-            </div>
-          );
-        })}
+            }`}
+          >
+            {line}
+          </div>
+        ))}
+        {history.slice(welcomeMessage.length).map((line, i) => (
+          <div 
+            key={`history-${i}`} 
+            className={`whitespace-pre-wrap ${
+              line.startsWith('~') || line.includes('$') 
+                ? themes[theme].prompt
+                : line.includes('not found') 
+                  ? themes[theme].error 
+                  : themes[theme].text
+            }`}
+          >
+            {line}
+          </div>
+        ))}
       </div>
       <div className="flex items-center">
         <span className={`mr-2 ${themes[theme].prompt}`}>{currentPath} $</span>
