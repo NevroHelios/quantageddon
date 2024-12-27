@@ -6,7 +6,7 @@
 - [Machine Learning for Asset Managers](https://www.cambridge.org/core/books/machine-learning-for-asset-managers/6D9211305EA2E425D33A9F38D0AE3545) by Marcos Lopez de Prado
 
 ## Deep Dive Materials
-![Quant Books Collection](https://dlt.mobi/wp-content/uploads/2021/03/quant-community-logo.png)
+![Quant Books Collection](/quantageddon/fishing.png)
 
 ### Additional Resources
 - Code samples on [GitHub](https://github.com/topics/quantitative-finance)

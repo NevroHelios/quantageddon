@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/quantageddon/',
   plugins: [react()],
-  assetsInclude: ['**/*.md'],
+  assetsInclude: ['**/*.md', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.ascii'],
 })
