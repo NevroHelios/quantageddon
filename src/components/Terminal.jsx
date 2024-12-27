@@ -185,7 +185,7 @@ const Terminal = () => {
 
   // Updated commands object with new quant command
   const commands = {
-    quant: () => [...combineTextArt(quantArt.split('\n'), anime1.split('\n')).split('\n')],
+    quant: () => [quantArt],
     help: () => [...combineTextArt(helpArt.split('\n'), anime1.split('\n')).split('\n')],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources : 
