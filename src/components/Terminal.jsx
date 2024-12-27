@@ -103,31 +103,24 @@ const Terminal = () => {
 
   const themes = {
     cyberpunk: {
-      bg: 'bg-gray-900',
-      text: 'text-cyan-500',
-      highlight: 'text-pink-500',
+      bg: 'bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900',
+      text: 'text-cyan-500 hover:text-cyan-400 transition-colors',
+      highlight: 'text-pink-500 hover:text-pink-400 transition-colors',
       error: 'text-red-500',
       success: 'text-purple-400',
       prompt: 'text-yellow-400',
-      border: 'border-cyan-500'
+      border: 'border-cyan-500',
+      link: 'text-cyan-400 hover:text-cyan-300 underline flex items-center gap-1'
     },
     quantum: {
-      bg: 'bg-[#0a192f]',
-      text: 'text-[#64ffda]',
-      highlight: 'text-[#ff79c6]',
+      bg: 'bg-gradient-to-b from-[#0a192f] via-[#0c1b2b] to-[#0a192f]',
+      text: 'text-[#64ffda] hover:text-[#7affda] transition-colors',
+      highlight: 'text-[#ff79c6] hover:text-[#ff89d6] transition-colors',
       error: 'text-red-500',
       success: 'text-[#50fa7b]',
       prompt: 'text-[#bd93f9]',
-      border: 'border-[#64ffda]'
-    },
-    matrix: {
-      bg: 'bg-black',
-      text: 'text-green-500',
-      highlight: 'text-green-300',
-      error: 'text-red-500',
-      success: 'text-green-400',
-      prompt: 'text-yellow-500',
-      border: 'border-green-500'
+      border: 'border-[#64ffda]',
+      link: 'text-[#64ffda] hover:text-[#7affda] underline flex items-center gap-1'
     }
   };
 
@@ -193,14 +186,14 @@ const Terminal = () => {
       '│ quant   - View competition details       │',
       '│ ls      - List available resources       │',
       '│ cat     - View resource contents         │',
-      '├─ Other Commands ──────────────────────────┤',
+      '├─ Other Commands ─────────────────────────┤',
       '│ pwd     - Print working directory        │',
       '│ clear   - Clear terminal                 │',
       '│ theme   - Change color theme             │',
       '│ date    - Show current date and time     │',
       '│ tree    - Show resource structure        │',
       '│ whoami  - Show current user              │',
-      '└─────────────────────────────────────────┘'
+      '└──────────────────────────────────────────┘'
     ],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources : 
@@ -246,7 +239,7 @@ const Terminal = () => {
       }
       return [
         'Available themes:',
-        '- matrix ',
+        '- quantum ',
         '- cyberpunk (default)',
         'Usage: theme <theme-name>'
       ];

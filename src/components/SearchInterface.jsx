@@ -105,7 +105,7 @@ const SearchInterface = (props) => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center relative overflow-hidden">
       <div className="w-full min-h-screen relative" style={{ perspective: '2000px', perspectiveOrigin: 'center bottom' }}>
         <div 
           className="absolute inset-0 w-full min-h-screen transition-transform duration-1000"
