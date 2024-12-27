@@ -10,7 +10,7 @@ const SearchInterface = (props) => {
   const [isListening, setIsListening] = useState(false);
 
   // Centralized redirect URL for easy updates
-  const REDIRECT_URL = 'https://shattereddisk.github.io/rickroll/rickroll.mp4';
+  const REDIRECT_URL = 'https://cramyy.github.io/notgeddon/yay.mp4';
 
   const generateGlitchText = () => {
     const chars = '!@#$%^&*()_+QWERTYUIOPASDGHJKLZXCVBNM';
