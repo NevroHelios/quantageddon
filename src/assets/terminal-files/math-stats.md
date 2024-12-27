@@ -1,4 +1,4 @@
-`# Mathematics & Statistics Books
+# Mathematics & Statistics Books
 
 ## Foundation Texts
 1. [Stochastic Calculus for Finance I & II](https://link.springer.com/book/10.1007/978-0-387-22527-2) by Steven Shreve
@@ -17,4 +17,4 @@ def geometric_brownian_motion(S0, mu, sigma, T, N):
 ```
 
 ### Online Courses
-Visit our [Learning Portal](https://quantlearning.com) for interactive courses.`
+Visit our [Learning Portal](https://quantlearning.com) for interactive courses.

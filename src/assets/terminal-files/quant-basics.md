@@ -1,4 +1,4 @@
-`# Essential Quant Books
+# Essential Quant Books
 
 ## Modern Classics
 
@@ -25,4 +25,4 @@ Quant Books Collection
 ### Additional Resources
 
 - Code samples on [GitHub](https://github.com/topics/quantitative-finance)
-- Join our [Discord Community](https://discord.gg/quantfinance)`
+- Join our [Discord Community](https://discord.gg/quantfinance)
