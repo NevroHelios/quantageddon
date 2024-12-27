@@ -1,5 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Markdown from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
+import quantBasics from "../assets/terminal-files/quant-basics.md"
+import mathStats from "../assets/terminal-files/math-stats.md"
+import videoCourses from "../assets/terminal-files/video-courses.md"
+
+import {quantArt, helpArt, anime1, combineTextArt} from "./arts"
+// console.log(quantArt);
+
+
+
+const handleMarkDown = (filename) => {
+  const [markdown, setMarkdown] = useState('');
+
+  useEffect(() => {
+    const loadMarkdown = async () => {
+      try {
+        const response = await fetch(filename);
+        const data = await response.text();
+        setMarkdown(data);
+      } catch (error) {
+        console.error('Error loading markdown:', error);
+      }
+    };
+
+    if (filename) {
+      loadMarkdown();
+    }
+  }, [filename]); 
+
+  return markdown;
+}
+
+
 
 const Terminal = () => {
   const [input, setInput] = useState('');
@@ -130,59 +163,15 @@ const Terminal = () => {
     books: {
       type: 'directory',
       content: {
-        'quant-basics.txt': `# Essential Quant Books
+        'quant-basics.md': handleMarkDown(quantBasics),
 
-## Modern Classics
-- [Python for Finance](https://www.oreilly.com/library/view/python-for-finance/9781492024323/) by Yves Hilpisch
-- [Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086) by Marcos Lopez de Prado
-- [Machine Learning for Asset Managers](https://www.cambridge.org/core/books/machine-learning-for-asset-managers/6D9211305EA2E425D33A9F38D0AE3545) by Marcos Lopez de Prado
-
-## Deep Dive Materials
-![Quant Books Collection](https://dlt.mobi/wp-content/uploads/2021/03/quant-community-logo.png)
-
-### Additional Resources
-- Code samples on [GitHub](https://github.com/topics/quantitative-finance)
-- Join our [Discord Community](https://discord.gg/quantfinance)`,
-
-        'math-stats.txt': `# Mathematics & Statistics Books
-
-## Foundation Texts
-1. [Stochastic Calculus for Finance I & II](https://link.springer.com/book/10.1007/978-0-387-22527-2) by Steven Shreve
-2. [Options, Futures, and Other Derivatives](https://www.pearson.com/en-us/subject-catalog/p/options-futures-and-other-derivatives/P200000006417) by John Hull
-
-## Advanced Topics
-\`\`\`python
-# Example of stochastic process simulation
-import numpy as np
-
-def geometric_brownian_motion(S0, mu, sigma, T, N):
-    dt = T/N
-    t = np.linspace(0, T, N)
-    W = np.random.standard_normal(size = N)
-    W = np.cumsum(W)*np.sqrt(dt)
-    return S0 * np.exp((mu - 0.5 * sigma**2)*t + sigma*W)
-\`\`\`
-
-### Online Courses
-Visit our [Learning Portal](https://quantlearning.com) for interactive courses.`
+        'math-stats.md': handleMarkDown(mathStats),
       }
     },
     tutorials: {
       type: 'directory',
       content: {
-        'video-courses.txt': `# Free Video Resources
-
-## Top Playlists
-1. [Quantopian Lecture Series](https://www.youtube.com/playlist?list=PLQVvvaa0QuDcOdF96TBtRtuQksErCEBYZ)
-2. [QuantStart Machine Learning](https://www.youtube.com/c/quantstart)
-
-![Tutorial Preview](/api/placeholder/600/300)
-
-## Interactive Notebooks
-- Access our [Jupyter Collection](https://github.com/jupyter/jupyter/wiki)
-- Try our [Google Colab Templates](https://colab.research.google.com)`,
-
-        'online-platforms.txt': '# Learning Platforms\n\n- [Coursera: Financial Engineering](https://www.coursera.org/learn/financial-engineering-1)\n- [edX: Computational Investing](https://www.edx.org/learn/investing)\n- [Udacity: AI for Trading](https://www.udacity.com/course/ai-for-trading--nd880)'
+        'video-courses.txt': handleMarkDown(videoCourses),
       }
     },
     repositories: {
@@ -196,50 +185,8 @@ Visit our [Learning Portal](https://quantlearning.com) for interactive courses.`
 
   // Updated commands object with new quant command
   const commands = {
-    quant: () => [
-      '╔══════════════════ QUANTAGEDDON ══════════════════╗',
-      '║                                                  ║',
-      '║                                                  ║',
-      '║                                                  ║',
-      '╠══════════════════════════════════════════════════╣',
-      '║ Competition Link: xyz                            ║',
-      '║                                                  ║',
-      '║ Kaggle Comp Details:                             ║',
-      '║ • Stock market prediction challenge              ║',
-      '║ • Machine learning-based market analysis         ║',
-      '║                                                  ║',
-      '║ Timeline:                                        ║',
-      '║ Day 1: Kickoff & Dataset Release                 ║',
-      '║ Day 2: Development & Public Leaderboard          ║',
-      '║ Day 3: Feature Engineering Workshop              ║',
-      '║ Day 4: Finals & Winner Announcement              ║',
-      '║                                                  ║',
-      '║ Evaluation:                                      ║',
-      '║ • 80% Model Performance                          ║',
-      '║ • 20% Documentation                              ║',
-      '║                                                  ║',
-      '║ Required Skills:                                 ║',
-      '║ • Python                                         ║',
-      '║ • Financial Analysis                             ║',
-      '║ • Machine Learning                               ║',
-      '║                                                  ║',
-      '║ Type "ls" to explore learning resources          ║',
-      '╚══════════════════════════════════════════════════╝'
-    ],
-    help: () => [
-      '┌─ Essential Commands ─────────────────────┐',
-      '│ quant   - View competition details       │',
-      '│ ls      - List available resources       │',
-      '│ cat     - View resource contents         │',
-      '├─ Other Commands ─────────────────────────┤',
-      '│ pwd     - Print working directory        │',
-      '│ clear   - Clear terminal                 │',
-      '│ theme   - Change color theme             │',
-      '│ date    - Show current date and time     │',
-      '│ tree    - Show resource structure        │',
-      '│ whoami  - Show current user              │',
-      '└──────────────────────────────────────────┘'
-    ],
+    quant: () => [quantArt],
+    help: () => [...combineTextArt(helpArt.split('\n'), anime1.split('\n')).split('\n')],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources : 
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
