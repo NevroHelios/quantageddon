@@ -5,7 +5,8 @@ import quantBasics from "../assets/terminal-files/quant-basics.md"
 import mathStats from "../assets/terminal-files/math-stats.md"
 import videoCourses from "../assets/terminal-files/video-courses.md"
 
-
+import {quantArt, helpArt, anime1, combineTextArt} from "./arts"
+// console.log(quantArt);
 
 
 
@@ -184,50 +185,8 @@ const Terminal = () => {
 
   // Updated commands object with new quant command
   const commands = {
-    quant: () => [
-      '╔══════════════════ QUANTAGEDDON ══════════════════╗',
-      '║                                                  ║',
-      '║                                                  ║',
-      '║                                                  ║',
-      '╠══════════════════════════════════════════════════╣',
-      '║ Competition Link: xyz                            ║',
-      '║                                                  ║',
-      '║ Kaggle Comp Details:                             ║',
-      '║ • Stock market prediction challenge              ║',
-      '║ • Machine learning-based market analysis         ║',
-      '║                                                  ║',
-      '║ Timeline:                                        ║',
-      '║ Day 1: Kickoff & Dataset Release                 ║',
-      '║ Day 2: Development & Public Leaderboard          ║',
-      '║ Day 3: Feature Engineering Workshop              ║',
-      '║ Day 4: Finals & Winner Announcement              ║',
-      '║                                                  ║',
-      '║ Evaluation:                                      ║',
-      '║ • 80% Model Performance                          ║',
-      '║ • 20% Documentation                              ║',
-      '║                                                  ║',
-      '║ Required Skills:                                 ║',
-      '║ • Python                                         ║',
-      '║ • Financial Analysis                             ║',
-      '║ • Machine Learning                               ║',
-      '║                                                  ║',
-      '║ Type "ls" to explore learning resources          ║',
-      '╚══════════════════════════════════════════════════╝'
-    ],
-    help: () => [
-      '┌─ Essential Commands ─────────────────────┐',
-      '│ quant   - View competition details       │',
-      '│ ls      - List available resources       │',
-      '│ cat     - View resource contents         │',
-      '├─ Other Commands ─────────────────────────┤',
-      '│ pwd     - Print working directory        │',
-      '│ clear   - Clear terminal                 │',
-      '│ theme   - Change color theme             │',
-      '│ date    - Show current date and time     │',
-      '│ tree    - Show resource structure        │',
-      '│ whoami  - Show current user              │',
-      '└──────────────────────────────────────────┘'
-    ],
+    quant: () => [...combineTextArt(quantArt.split('\n'), anime1.split('\n')).split('\n')],
+    help: () => [...combineTextArt(helpArt.split('\n'), anime1.split('\n')).split('\n')],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources : 
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
