@@ -153,7 +153,7 @@ const SearchInterface = (props) => {
                       className="flex-grow bg-transparent text-white outline-none mx-4 text-lg"
                       value={searchText}
                       onChange={(e) => setSearchText(e.target.value)}
-                      placeholder="Hint: Type Quantageddon"
+                      placeholder="Type your favorite technical event name, better if it's us!"
                     />
                     <div className="flex items-center space-x-4">
                       <button type="button" className="hover:bg-[#3c4043] p-2 rounded-full transition-colors duration-200">
