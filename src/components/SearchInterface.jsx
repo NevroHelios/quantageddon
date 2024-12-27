@@ -172,7 +172,7 @@ const SearchInterface = (props) => {
 
                 <div className="flex justify-center mt-8 space-x-3">
                 <button 
-  onClick={() => window.open("https://www.reddit.com/r/algotrading/top/?t=year", "_blank")} 
+  onClick={() => window.open("https://discord.gg/xNtTUe9Euk", "_blank")} 
   className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
 >
                     Quant Search
