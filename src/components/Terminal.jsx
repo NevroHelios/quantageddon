@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const Terminal = () => {
   const [input, setInput] = useState('');
@@ -19,27 +20,40 @@ const Terminal = () => {
     '                Welcome to QuantOS Terminal v1.0.0               ',
     '════════════════════════════════════════════════════════════════',
     '                                                                ',
-    ' ██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███████╗',
+    '██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███████╗',
     '██╔═══██╗██║   ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗██╔════╝',
     '██║   ██║██║   ██║███████║██╔██╗ ██║   ██║   ██║   ██║███████╗',
     '██║▄▄ ██║██║   ██║██╔══██║██║╚██╗██║   ██║   ██║   ██║╚════██║',
     '╚██████╔╝╚██████╔╝██║  ██║██║ ╚████║   ██║   ╚██████╔╝███████║',
-    ' ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚══════╝',
+    '╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚══════╝',
     '                                                                ',
     '════════════════════════════════════════════════════════════════',
-    ' • Type "help" for available commands                           ',
-    ' • Type "theme" to change colors                               ',
-    ' • Running on [CPU: Potato Threadripper] [RAM: 128GB DDR5]       ',
-    ' • Quantum Processing Unit: Active | Qubit Status: Stable      ',
+    '• Type "help" for available commands                           ',
+    '• Type "theme" to change colors                               ',
+    '• Running on [CPU: Potato Threadripper] [RAM: 128GB DDR5]       ',
+    '• Quantum Processing Unit: Active | Qubit Status: Stable      ',
     '════════════════════════════════════════════════════════════════',
     ''
-  ];
+  ].join('\n');
 
   // Scroll to bottom whenever history changes
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
+    
+    // Add input event listener to input ref
+    const inputElement = inputRef.current;
+    if (inputElement) {
+      inputElement.addEventListener('input', scrollToBottom);
+    }
+
+    // Cleanup
+    return () => {
+      if (inputElement) {
+        inputElement.removeEventListener('input', scrollToBottom);
+      }
+    };
   }, [history]);
 
   // Keep input focused
@@ -64,29 +78,14 @@ const Terminal = () => {
       const progress = timestamp - startTime;
       
       if (progress >= totalDuration) {
-        setHistory(fullWelcomeMessage);
+        setHistory(fullWelcomeMessage.split('\n'));
         return;
       }
       
-      const totalChars = fullWelcomeMessage.join('\n').length;
+      const totalChars = fullWelcomeMessage.length;
       const charsToShow = Math.floor((progress / totalDuration) * totalChars);
       
-      let currentChar = 0;
-      let currentLines = [];
-      
-      for (const line of fullWelcomeMessage) {
-        if (currentChar + line.length <= charsToShow) {
-          currentLines.push(line);
-          currentChar += line.length + 1;
-        } else if (currentChar < charsToShow) {
-          currentLines.push(line.substring(0, charsToShow - currentChar));
-          break;
-        } else {
-          break;
-        }
-      }
-      
-      setHistory(currentLines);
+      setHistory(fullWelcomeMessage.substring(0, charsToShow).split('\n'));
       animationRef.current = requestAnimationFrame(animate);
     };
     
@@ -125,19 +124,65 @@ const Terminal = () => {
   };
 
 
+
+
   const resources = {
     books: {
       type: 'directory',
       content: {
-        'quant-basics.txt': '# Essential Quant Books\n\n- "Python for Finance" by Yves Hilpisch\n- "Advances in Financial Machine Learning" by Marcos Lopez de Prado\n- "Machine Learning for Asset Managers" by Marcos Lopez de Prado\n- "Inside the Black Box" by Rishi K. Narang',
-        'math-stats.txt': '# Mathematics & Statistics Books\n\n- "Stochastic Calculus for Finance I & II" by Steven Shreve\n- "Options, Futures, and Other Derivatives" by John Hull\n- "Statistical Inference" by Casella and Berger'
+        'quant-basics.txt': `# Essential Quant Books
+
+## Modern Classics
+- [Python for Finance](https://www.oreilly.com/library/view/python-for-finance/9781492024323/) by Yves Hilpisch
+- [Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086) by Marcos Lopez de Prado
+- [Machine Learning for Asset Managers](https://www.cambridge.org/core/books/machine-learning-for-asset-managers/6D9211305EA2E425D33A9F38D0AE3545) by Marcos Lopez de Prado
+
+## Deep Dive Materials
+![Quant Books Collection](https://dlt.mobi/wp-content/uploads/2021/03/quant-community-logo.png)
+
+### Additional Resources
+- Code samples on [GitHub](https://github.com/topics/quantitative-finance)
+- Join our [Discord Community](https://discord.gg/quantfinance)`,
+
+        'math-stats.txt': `# Mathematics & Statistics Books
+
+## Foundation Texts
+1. [Stochastic Calculus for Finance I & II](https://link.springer.com/book/10.1007/978-0-387-22527-2) by Steven Shreve
+2. [Options, Futures, and Other Derivatives](https://www.pearson.com/en-us/subject-catalog/p/options-futures-and-other-derivatives/P200000006417) by John Hull
+
+## Advanced Topics
+\`\`\`python
+# Example of stochastic process simulation
+import numpy as np
+
+def geometric_brownian_motion(S0, mu, sigma, T, N):
+    dt = T/N
+    t = np.linspace(0, T, N)
+    W = np.random.standard_normal(size = N)
+    W = np.cumsum(W)*np.sqrt(dt)
+    return S0 * np.exp((mu - 0.5 * sigma**2)*t + sigma*W)
+\`\`\`
+
+### Online Courses
+Visit our [Learning Portal](https://quantlearning.com) for interactive courses.`
       }
     },
     tutorials: {
       type: 'directory',
       content: {
-        'video-courses.txt': '# Free Video Resources\n\n- Quantopian Lecture Series on YouTube\n- QuantStart Machine Learning for Trading\n- Two Sigma Financial Modeling Challenge\n- World Quant University Free Courses',
-        'online-platforms.txt': '# Learning Platforms\n\n- Coursera: Financial Engineering and Risk Management\n- edX: Computational Investing\n- Udacity: Artificial Intelligence for Trading\n- DataCamp: Python for Finance'
+        'video-courses.txt': `# Free Video Resources
+
+## Top Playlists
+1. [Quantopian Lecture Series](https://www.youtube.com/playlist?list=PLQVvvaa0QuDcOdF96TBtRtuQksErCEBYZ)
+2. [QuantStart Machine Learning](https://www.youtube.com/c/quantstart)
+
+![Tutorial Preview](/api/placeholder/600/300)
+
+## Interactive Notebooks
+- Access our [Jupyter Collection](https://github.com/jupyter/jupyter/wiki)
+- Try our [Google Colab Templates](https://colab.research.google.com)`,
+
+        'online-platforms.txt': '# Learning Platforms\n\n- [Coursera: Financial Engineering](https://www.coursera.org/learn/financial-engineering-1)\n- [edX: Computational Investing](https://www.edx.org/learn/investing)\n- [Udacity: AI for Trading](https://www.udacity.com/course/ai-for-trading--nd880)'
       }
     },
     repositories: {
@@ -211,6 +256,7 @@ const Terminal = () => {
         setCurrentPath('~');
         return ['Directory changed'];
       }
+      
       const currentLevel = currentPath === '~' ? resources : 
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
       if (currentLevel[dir] && currentLevel[dir].type === 'directory') {
@@ -223,7 +269,11 @@ const Terminal = () => {
       const currentLevel = currentPath === '~' ? resources : 
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
       if (currentLevel[file]) {
-        return ['', currentLevel[file], ''];
+        // Return special object to indicate markdown content
+        return [{
+          type: 'markdown',
+          content: currentLevel[file]
+        }];
       }
       return [`File '${file}' not found`];
     },
@@ -295,20 +345,89 @@ const Terminal = () => {
     if (!cmd.trim()) return;
     
     const [command, ...args] = cmd.trim().split(' ');
-    const output = commands[command] 
+    let output = commands[command] 
       ? commands[command](...args) 
       : [`Command '${command}' not found. Type 'help' for available commands`];
     
-    setHistory(prev => [...prev, `${currentPath} $ ${cmd}`, ...output]);
+    // Flatten output array to remove empty lines
+    output = output.filter(line => line !== '');
+    
+    setHistory(prev => [
+      ...prev,
+      `${currentPath} $ ${cmd}`,
+      ...output
+    ]);
+    
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
     
-    // Ensure cursor stays visible
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (inputRef.current) {
+      inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  const renderOutput = (line) => {
+    // Handle string output
+    if (typeof line === 'string') {
+      return (
+        <div 
+          className={`whitespace-pre-wrap ${
+            line.startsWith('~') || line.includes('$') 
+              ? themes[theme].prompt
+              : line.includes('not found') 
+                ? themes[theme].error 
+                : themes[theme].text
+          }`}
+        >
+          {line}
+        </div>
+      );
+    }
+
+    // Handle object output (including markdown)
+    if (typeof line === 'object' && line !== null) {
+      if (line.type === 'markdown') {
+        return (
+          <div className={`markdown-content ${themes[theme].text} prose prose-invert max-w-none p-4`}>
+            <ReactMarkdown
+              components={{
+                a: ({node, ...props}) => (
+                  <a
+                    {...props}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={themes[theme].link}
+                  />
+                ),
+                img: ({node, ...props}) => (
+                  <img
+                    {...props}
+                    className="max-w-full h-auto rounded-lg my-4"
+                    loading="lazy"
+                  />
+                ),
+                code: ({node, inline, ...props}) => (
+                  <code
+                    {...props}
+                    className={`${inline ? 'bg-gray-800 px-1 rounded' : 'block bg-gray-800 p-4 rounded-lg'}`}
+                  />
+                ),
+                pre: ({node, ...props}) => (
+                  <pre
+                    {...props}
+                    className="bg-gray-800 p-4 rounded-lg overflow-x-auto"
+                  />
+                )
+              }}
+            >
+              {line.content}
+            </ReactMarkdown>
+          </div>
+        );
       }
-    }, 0);
+      return <div>{JSON.stringify(line)}</div>;
+    }
+    return null;
   };
 
   const handleKeyDown = (e) => {
@@ -349,6 +468,19 @@ const Terminal = () => {
     }
   };
 
+  // Add this new function
+  const scrollToBottom = () => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  };
+
+  // Modify your input handler to include scrolling
+  const handleInput = (e) => {
+    // ...existing input handling code...
+    scrollToBottom();
+  };
+
   return (
     <div 
       ref={terminalRef}
@@ -357,21 +489,13 @@ const Terminal = () => {
     >
       <div className="mb-4">
         {history.map((line, i) => (
-          <div 
-            key={`history-${i}`} 
-            className={`whitespace-pre-wrap ${
-              line.startsWith('~') || line.includes('$') 
-                ? themes[theme].prompt
-                : line.includes('not found') 
-                  ? themes[theme].error 
-                  : themes[theme].text
-            }`}
-          >
-            {line}
+          <div key={`history-${i}`}>
+            {renderOutput(line)}
           </div>
         ))}
       </div>
-      <div className="flex items-center sticky bottom-0">
+      
+      <div className="flex items-center sticky bottom-0 bg-opacity-90 py-2">
         <span className={`mr-2 ${themes[theme].prompt}`}>{currentPath} $</span>
         <input
           ref={inputRef}
@@ -381,13 +505,49 @@ const Terminal = () => {
           onKeyDown={handleKeyDown}
           className={`bg-transparent border-none outline-none flex-grow ${themes[theme].text} caret-current`}
           autoFocus
+          spellCheck="false"
+          autoComplete="off"
         />
       </div>
+      
       {showSuggestions && suggestions.length > 0 && (
-        <div className={`mt-2 ${themes[theme].text}`}>
-          {suggestions.join('  ')}
+        <div className={`mt-2 p-2 rounded ${themes[theme].bg} border ${themes[theme].border} sticky bottom-16`}>
+          <div className={`${themes[theme].text} flex flex-wrap gap-2`}>
+            {suggestions.map((suggestion, index) => (
+              <span 
+                key={index}
+                className="cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => {
+                  const args = input.split(' ');
+                  args[args.length - 1] = suggestion;
+                  setInput(args.join(' '));
+                  setShowSuggestions(false);
+                  inputRef.current?.focus();
+                }}
+              >
+                {suggestion}
+              </span>
+            ))}
+          </div>
         </div>
       )}
+
+      {/* Command history preview */}
+      {historyIndex >= 0 && (
+        <div className={`absolute bottom-16 right-4 ${themes[theme].text} opacity-50`}>
+          History: {commandHistory.length - historyIndex}/{commandHistory.length}
+        </div>
+      )}
+
+      {/* Theme indicator */}
+      <div className={`fixed top-4 right-4 ${themes[theme].text} opacity-50 text-sm`}>
+        Theme: {theme}
+      </div>
+
+      {/* Help hint */}
+      <div className={`fixed bottom-4 right-4 ${themes[theme].text} opacity-50 text-sm`}>
+        Type 'help' for commands
+      </div>
     </div>
   );
 };
