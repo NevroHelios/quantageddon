@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
-import quantBasics from "../assets/terminal-files/quant-basics.md"
+import Resources from "../assets/terminal-files/Resources.md"
 import mathStats from "../assets/terminal-files/math-stats.md"
 import videoCourses from "../assets/terminal-files/video-courses.md"
-
+import ObsidianMarkdown from './ObsidianMarkdown';
 import {quantArt, helpArt, anime1, books, combineTextArt} from "./arts"
 // console.log(quantArt);
 
@@ -163,7 +163,7 @@ const Terminal = () => {
     books: {
       type: 'directory',
       content: {
-        'quant-basics.md': handleMarkDown(quantBasics),
+        'Resources.md': handleMarkDown(Resources),
 
         'math-stats.md': handleMarkDown(mathStats),
       }
@@ -335,40 +335,8 @@ const Terminal = () => {
     if (typeof line === 'object' && line !== null) {
       if (line.type === 'markdown') {
         return (
-          <div className={`markdown-content ${themes[theme].text} prose prose-invert max-w-none p-4`}>
-            <ReactMarkdown
-              components={{
-                a: ({node, ...props}) => (
-                  <a
-                    {...props}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={themes[theme].link}
-                  />
-                ),
-                img: ({node, ...props}) => (
-                  <img
-                    {...props}
-                    className="max-w-full h-auto rounded-lg my-4"
-                    loading="lazy"
-                  />
-                ),
-                code: ({node, inline, ...props}) => (
-                  <code
-                    {...props}
-                    className={`${inline ? 'bg-gray-800 px-1 rounded' : 'block bg-gray-800 p-4 rounded-lg'}`}
-                  />
-                ),
-                pre: ({node, ...props}) => (
-                  <pre
-                    {...props}
-                    className="bg-gray-800 p-4 rounded-lg overflow-x-auto"
-                  />
-                )
-              }}
-            >
-              {line.content}
-            </ReactMarkdown>
+          <div className="markdown-content">
+            <ObsidianMarkdown content={line.content} />
           </div>
         );
       }
