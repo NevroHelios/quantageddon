@@ -1,6 +1,6 @@
 function combineTextArt(textLines, artLines) {
     const textWidth = Math.max(...textLines.map(line => line.length));
-    const padding = "    ";  
+    const padding = "                         ";  
     
     const maxLines = Math.max(textLines.length, artLines.length);
     
@@ -69,21 +69,58 @@ let helpArt = `┌─ Essential Commands ─────────────
 └──────────────────────────────────────────┘`
 
 
-let anime1 = `⣇⣿⠘⣿⣿⣿⡿⡿⣟⣟⢟⢟⢝⠵⡝⣿⡿⢂⣼⣿⣷⣌⠩⡫⡻⣝⠹⢿⣿⣷
-⡆⣿⣆⠱⣝⡵⣝⢅⠙⣿⢕⢕⢕⢕⢝⣥⢒⠅⣿⣿⣿⡿⣳⣌⠪⡪⣡⢑⢝⣇
-⡆⣿⣿⣦⠹⣳⣳⣕⢅⠈⢗⢕⢕⢕⢕⢕⢈⢆⠟⠋⠉⠁⠉⠉⠁⠈⠼⢐⢕⢽
-⡗⢰⣶⣶⣦⣝⢝⢕⢕⠅⡆⢕⢕⢕⢕⢕⣴⠏⣠⡶⠛⡉⡉⡛⢶⣦⡀⠐⣕⢕
-⡝⡄⢻⢟⣿⣿⣷⣕⣕⣅⣿⣔⣕⣵⣵⣿⣿⢠⣿⢠⣮⡈⣌⠨⠅⠹⣷⡀⢱⢕
-⡝⡵⠟⠈⢀⣀⣀⡀⠉⢿⣿⣿⣿⣿⣿⣿⣿⣼⣿⢈⡋⠴⢿⡟⣡⡇⣿⡇⡀⢕
-⡝⠁⣠⣾⠟⡉⡉⡉⠻⣦⣻⣿⣿⣿⣿⣿⣿⣿⣿⣧⠸⣿⣦⣥⣿⡇⡿⣰⢗⢄
-⠁⢰⣿⡏⣴⣌⠈⣌⠡⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣉⣉⣁⣄⢖⢕⢕⢕
-⡀⢻⣿⡇⢙⠁⠴⢿⡟⣡⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣵⣵⣿
-⡻⣄⣻⣿⣌⠘⢿⣷⣥⣿⠇⣿⣿⣿⣿⣿⣿⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣷⢄⠻⣿⣟⠿⠦⠍⠉⣡⣾⣿⣿⣿⣿⣿⣿⢸⣿⣦⠙⣿⣿⣿⣿⣿⣿⣿⣿⠟
-⡕⡑⣑⣈⣻⢗⢟⢞⢝⣻⣿⣿⣿⣿⣿⣿⣿⠸⣿⠿⠃⣿⣿⣿⣿⣿⣿⡿⠁⣠
-⡝⡵⡈⢟⢕⢕⢕⢕⣵⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣿⣿⣿⣿⣿⠿⠋⣀⣈⠙
-⡝⡵⡕⡀⠑⠳⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⢉⡠⡲⡫⡪⡪⡣ `;
+let anime1 = String.raw`                              ______
+                            __-''zzzzzz\\\`\\\`--__
+                         _-'zzzzzzzzzzzzzzzzz\\\`\`-_
+                      _-'zzzzzz*zz*zzzzzzzzzzzzzz\`-_
+                     /zzzzzzz,/z/ |zz*zzzzzzzzzzzzzz\`-
+                    /zzzzzzz//z/  |zz|zzzzzzzzzzzzzzzz\      
+                  ,/zzzzzz,//z/   |zz|\`zzz*zzzzzzzzzzzz\         
+                 ,/zzz*zz/ ','    \zz||zzz|zzzzzzzzzzzzz\
+                 /zzz/zz/  ,'      \z|\zzz|zzzzzzz*zzzzz\`\
+                /*zz//z/   '       \z| \zz|zzzz*zzz\zzzzz|
+               |/zz//z/   '         \|  \z|\zzz\zzz|zzzzz|
+               ''z/ |/    .          .   \\ \zz\zzz|zzzzz|
+              ' |/| ..-_-            .-_-.\\ \zz\zz|zzzz,|
+             .  | | /,'#|            ,'#\` \.  \z\zz|zzzz/
+                . '| |##, _----_     |###| |   \z\z|zzz/
+                \/ \` \`-'./      |    \`._.'/ .   \\\/zz/
+                | ---='     .    \`---------'     _+-./
+                |                               /   |
+                \         .----.                |  /
+                 \`\        \__-\`               __-'
+                   \`=-_                  ___-='
+         _             \`=--___________,='|zz\
+    _,-''o\             / /#|......|##\  ,zzz\
+   /######o\-______   _/-/##|...../####\./zzzz\
+  /#######ooo\---oo\`\/  /---\___/  \`._/  \zzzz\
+ /########oooooooo###|     /####|   /     \zzz\
+|########ooooooo#####| ____|---#| ----   |o|zzz\
+|####ooooooooooo#####|/### |##|- /___/   |o|zzz\
+ \##/././|ooo#ooo###//----|---- |###/    |o|zzzz\
+  \|././.|#.####o##/ |####|_  _ |###|    |o|zzzz\
+   \.....|/.|####_,--|###/*| /*|----     |o|z|zz\
+     '-,....---'\`ooo/----..| |.|   |-------\z|zzz
+        +-....\\\`-,__/   |../ |.|  /ooooooooo||zzz
+         \.....\.../    /./  \.| |o__,,---,/z|zz z
+         |......../    /./   |..\ +|.....|zzz|zz z
+`;
 
-// quantArt = combineTextArt(quantArt.split('\n'), anime1.split('\n'));
 
-export {quantArt, helpArt, anime1, combineTextArt};
+
+let books = String.raw`              .__=\__                  .__==__,
+            jf'      ~~=\,         _=/~'      \`\,
+        ._jZ'            \`\q,   /=~             \`\__
+       j5(/                 \`\./                  V\\,   
+     .Z))' _____              |             .____, \)/\
+    j5(K=~~     ~~~~\=_,      |      _/=~~~~'    \`~~+K\\,
+  .Z)\/                \`~=L   |  _=/~                 t\ZL
+ j5(_/.__/===========\__   ~q |j/   .__============___/\J(N,
+4L#XXXL_________________XGm, \P  .mXL_________________JXXXW8L
+~~~~~~~~~~~~~~~~~~~~~~~~~YKWmmWmmW@~~~~~~~~~~~~~~~~~~~~~~~~~~
+`
+
+// console.log(books);
+
+
+export {quantArt, helpArt, anime1, books, combineTextArt};

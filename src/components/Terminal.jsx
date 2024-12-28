@@ -5,7 +5,7 @@ import quantBasics from "../assets/terminal-files/quant-basics.md"
 import mathStats from "../assets/terminal-files/math-stats.md"
 import videoCourses from "../assets/terminal-files/video-courses.md"
 
-import {quantArt, helpArt, anime1, combineTextArt} from "./arts"
+import {quantArt, helpArt, anime1, books, combineTextArt} from "./arts"
 // console.log(quantArt);
 
 
@@ -185,8 +185,8 @@ const Terminal = () => {
 
   // Updated commands object with new quant command
   const commands = {
-    quant: () => [quantArt],
-    help: () => [...combineTextArt(helpArt.split('\n'), anime1.split('\n')).split('\n')],
+    quant: () => [...combineTextArt(quantArt.split('\n'), anime1.split('\n')).split('\n')],
+    help: () => [helpArt],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources : 
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
