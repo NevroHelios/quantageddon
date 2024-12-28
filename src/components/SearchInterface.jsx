@@ -21,8 +21,9 @@ const SearchInterface = (props) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchText.toLowerCase() !== 'quantageddon') {
-   
-    window.location.href = "https://cramyy.github.io/quantageddon.in/search.mp4";}
+
+      window.location.href = "https://cramyy.github.io/quantageddon.in/reward.mp4";
+    }
   };
 
   // Voice recognition setup
@@ -51,7 +52,7 @@ const SearchInterface = (props) => {
 
   useEffect(() => {
     let glitchInterval;
-    
+
     if (searchText.toLowerCase() === 'quantageddon') {
       setIsFlipping(true);
       setShowGamePrompt(true);
@@ -96,7 +97,7 @@ const SearchInterface = (props) => {
   };
 
   const LogoLetter = ({ children }) => (
-    <span 
+    <span
       className={`${letterColors[children] || 'text-white'} text-6xl font-bold tracking-tighter animate-pulse hover:animate-none transition-all duration-200`}
       style={{ textShadow: '0 0 10px rgba(255,255,255,0.1)' }}
     >
@@ -107,16 +108,16 @@ const SearchInterface = (props) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center relative overflow-hidden">
       <div className="w-full min-h-screen relative" style={{ perspective: '2000px', perspectiveOrigin: 'center bottom' }}>
-        <div 
+        <div
           className="absolute inset-0 w-full min-h-screen transition-transform duration-1000"
-          style={{ 
+          style={{
             transformStyle: 'preserve-3d',
             transform: isFlipping ? 'rotateX(14deg)' : 'rotateX(0deg)',
             transformOrigin: 'bottom',
           }}
           id='glitch'
         >
-          <div 
+          <div
             className="absolute inset-0 w-full min-h-screen bg-[#202124]"
             style={{ backfaceVisibility: 'hidden' }}
           >
@@ -159,8 +160,8 @@ const SearchInterface = (props) => {
                       <button type="button" className="hover:bg-[#3c4043] p-2 rounded-full transition-colors duration-200">
                         <Camera className="w-5 h-5 text-[#999da2]" />
                       </button>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={handleVoiceInput}
                         className={`hover:bg-[#3c4043] p-2 rounded-full transition-colors duration-200 ${isListening ? 'bg-red-500' : ''}`}
                       >
@@ -171,10 +172,10 @@ const SearchInterface = (props) => {
                 </form>
 
                 <div className="flex justify-center mt-8 space-x-3">
-                <button 
-  onClick={() => window.open("https://discord.gg/xNtTUe9Euk", "_blank")} 
-  className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
->
+                  <button
+                    onClick={() => window.open("https://discord.gg/xNtTUe9Euk", "_blank")}
+                    className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
+                  >
                     Quant Search
                   </button>
                   <button onClick={() => window.location.href = REDIRECT_URL} className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200">
@@ -207,21 +208,21 @@ const SearchInterface = (props) => {
             </footer>
           </div>
 
-          <div 
+          <div
             className="absolute inset-0 w-full min-h-screen bg-black bg-opacity-80"
-            style={{ 
+            style={{
               backfaceVisibility: 'hidden',
               transform: 'rotateX(180deg)'
             }}
           />
         </div>
 
-        <div 
+        <div
           className={`fixed inset-x-0 top-0 flex items-start justify-center transition-all duration-1000`}
-          style={{ 
+          style={{
             zIndex: 55,
-            transform: showGamePrompt 
-              ? 'translateY(10px) rotateX(-25deg)' 
+            transform: showGamePrompt
+              ? 'translateY(10px) rotateX(-25deg)'
               : 'translateY(-100%) rotateX(-25deg)',
             transformOrigin: 'center top',
             perspective: 'none',
@@ -238,13 +239,13 @@ const SearchInterface = (props) => {
                 onClick={() => {
                   var glitch = document.getElementById('glitch');
                   var invitation = document.getElementById('invitation');
-                  
+
                   handleGameResponse('play');
-                  
+
                   glitch.style.transform = 'rotateX(90deg)';
                   invitation.style.transition = 'transform 2s';
                   invitation.style.transform = ' rotateX(-90deg)';
-                  
+
                   // start terminal 
                   setTimeout(() => {
                     props.startTerminal();
@@ -268,7 +269,7 @@ const SearchInterface = (props) => {
       {showEasterEgg && (
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 text-cyan-500 font-mono animate-pulse space-y-1">
           <div>{`> Initialization complete.`}</div>
-          
+
         </div>
       )}
     </div>

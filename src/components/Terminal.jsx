@@ -5,7 +5,8 @@ import Resources from "../assets/terminal-files/Resources.md"
 import mathStats from "../assets/terminal-files/math-stats.md"
 import videoCourses from "../assets/terminal-files/video-courses.md"
 import ObsidianMarkdown from './ObsidianMarkdown';
-import {quantArt, helpArt, anime1, books, combineTextArt} from "./arts"
+import Introduction from "../assets/terminal-files/Introduction.md"
+import { quantArt, helpArt, anime1, books, combineTextArt } from "./arts"
 // console.log(quantArt);
 
 
@@ -27,7 +28,7 @@ const handleMarkDown = (filename) => {
     if (filename) {
       loadMarkdown();
     }
-  }, [filename]); 
+  }, [filename]);
 
   return markdown;
 }
@@ -74,7 +75,7 @@ const Terminal = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-    
+
     // Add input event listener to input ref
     const inputElement = inputRef.current;
     if (inputElement) {
@@ -105,27 +106,27 @@ const Terminal = () => {
   useEffect(() => {
     let startTime = null;
     const totalDuration = 4000;
-    
+
     const animate = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
-      
+
       if (progress >= totalDuration) {
         setHistory(fullWelcomeMessage.split('\n'));
         return;
       }
-      
+
       const totalChars = fullWelcomeMessage.length;
       const charsToShow = Math.floor((progress / totalDuration) * totalChars);
-      
+
       setHistory(fullWelcomeMessage.substring(0, charsToShow).split('\n'));
       animationRef.current = requestAnimationFrame(animate);
     };
-    
+
     if (showWelcome) {
       animationRef.current = requestAnimationFrame(animate);
     }
-    
+
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -160,6 +161,7 @@ const Terminal = () => {
 
 
   const resources = {
+    'Introduction.md': handleMarkDown(Introduction),
     books: {
       type: 'directory',
       content: {
@@ -188,7 +190,7 @@ const Terminal = () => {
     quant: () => [...combineTextArt(quantArt.split('\n'), anime1.split('\n')).split('\n')],
     help: () => [helpArt],
     ls: () => {
-      const currentLevel = currentPath === '~' ? resources : 
+      const currentLevel = currentPath === '~' ? resources :
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
       return ['Directory contents:', '', ...Object.keys(currentLevel)];
     },
@@ -203,8 +205,8 @@ const Terminal = () => {
         setCurrentPath('~');
         return ['Directory changed'];
       }
-      
-      const currentLevel = currentPath === '~' ? resources : 
+
+      const currentLevel = currentPath === '~' ? resources :
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
       if (currentLevel[dir] && currentLevel[dir].type === 'directory') {
         setCurrentPath(currentPath === '~' ? `~/${dir}` : `${currentPath}/${dir}`);
@@ -213,7 +215,7 @@ const Terminal = () => {
       return [`Directory '${dir}' not found`];
     },
     cat: (file) => {
-      const currentLevel = currentPath === '~' ? resources : 
+      const currentLevel = currentPath === '~' ? resources :
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
       if (currentLevel[file]) {
         // Return special object to indicate markdown content
@@ -249,7 +251,7 @@ const Terminal = () => {
           const item = obj[key];
           const connector = isLast ? '└── ' : '├── ';
           const newPrefix = prefix + (isLast ? '    ' : '│   ');
-          
+
           if (item.type === 'directory') {
             return [
               prefix + connector + key,
@@ -259,7 +261,7 @@ const Terminal = () => {
           return prefix + connector + key;
         }).flat();
       };
-      
+
       return ['Directory structure:', '', ...buildTree(resources)];
     },
     whoami: () => ['guest@resource-terminal'],
@@ -273,9 +275,9 @@ const Terminal = () => {
   };
 
   const getSuggestions = (inputValue) => {
-    const currentLevel = currentPath === '~' ? resources : 
+    const currentLevel = currentPath === '~' ? resources :
       currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
-    
+
     const args = inputValue.split(' ');
     const command = args[0];
     const partial = args[args.length - 1];
@@ -290,24 +292,24 @@ const Terminal = () => {
 
   const handleCommand = (cmd) => {
     if (!cmd.trim()) return;
-    
+
     const [command, ...args] = cmd.trim().split(' ');
-    let output = commands[command] 
-      ? commands[command](...args) 
+    let output = commands[command]
+      ? commands[command](...args)
       : [`Command '${command}' not found. Type 'help' for available commands`];
-    
+
     // Flatten output array to remove empty lines
     output = output.filter(line => line !== '');
-    
+
     setHistory(prev => [
       ...prev,
       `${currentPath} $ ${cmd}`,
       ...output
     ]);
-    
+
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
-    
+
     if (inputRef.current) {
       inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -317,14 +319,13 @@ const Terminal = () => {
     // Handle string output
     if (typeof line === 'string') {
       return (
-        <div 
-          className={`whitespace-pre-wrap ${
-            line.startsWith('~') || line.includes('$') 
-              ? themes[theme].prompt
-              : line.includes('not found') 
-                ? themes[theme].error 
-                : themes[theme].text
-          }`}
+        <div
+          className={`whitespace-pre-wrap ${line.startsWith('~') || line.includes('$')
+            ? themes[theme].prompt
+            : line.includes('not found')
+              ? themes[theme].error
+              : themes[theme].text
+            }`}
         >
           {line}
         </div>
@@ -397,7 +398,7 @@ const Terminal = () => {
   };
 
   return (
-    <div 
+    <div
       ref={terminalRef}
       className={`${themes[theme].bg} p-4 font-mono h-screen overflow-y-auto`}
       onClick={() => inputRef.current?.focus()}
@@ -409,7 +410,7 @@ const Terminal = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="flex items-center sticky bottom-0 bg-opacity-90 py-2">
         <span className={`mr-2 ${themes[theme].prompt}`}>{currentPath} $</span>
         <input
@@ -424,12 +425,12 @@ const Terminal = () => {
           autoComplete="off"
         />
       </div>
-      
+
       {showSuggestions && suggestions.length > 0 && (
         <div className={`mt-2 p-2 rounded ${themes[theme].bg} border ${themes[theme].border} sticky bottom-16`}>
           <div className={`${themes[theme].text} flex flex-wrap gap-2`}>
             {suggestions.map((suggestion, index) => (
-              <span 
+              <span
                 key={index}
                 className="cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={() => {
