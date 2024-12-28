@@ -17,8 +17,8 @@ const App = () => {
     <div className="relative w-full h-screen overflow-hidden">
       <div
         className={`
-          absolute w-full h-full transition-opacity duration-300 ease-in-out
-          ${isAnimating ? 'opacity-0' : 'opacity-100'}
+          absolute w-full h-full transition-opacity duration-1 ease-in-out
+          ${isAnimating ? 'opacity-100' : 'opacity-100'}
         `}
         onTransitionEnd={() => setIsAnimating(false)}
       >
