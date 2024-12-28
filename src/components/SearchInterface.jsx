@@ -22,7 +22,7 @@ const SearchInterface = (props) => {
     e.preventDefault();
     if (searchText.toLowerCase() !== 'quantageddon') {
    
-    window.location.href = "https://cramyy.github.io/quantageddon.in/search.mp4";}
+    window.location.href = "https://cramyy.github.io/quantageddon.in/reward.mp4";}
   };
 
   // Voice recognition setup
