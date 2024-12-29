@@ -13,9 +13,28 @@ import quantContent from "../assets/terminal-files/quant.md";
 import contactContent from "../assets/terminal-files/contact.md";
 import rulesContent from "../assets/terminal-files/rules.md";
 import info from "../assets/terminal-files/info.md";
-import { quantArt, helpArt, anime1, books, combineTextArt } from "./arts";
 
 
+let helpArt = `┌─ Essential Commands ─────────────────────┐
+| kaggle  - Kaggle competition link        |
+│ register - Register for the competition  │
+| prizes  - View competition prizes        |
+│ info    - View competition details       │
+| contact - Contact competition organizers |
+│ guest   -  Guest information             │
+│ rules   - View competition rules         │
+├─ Linux Commands ─────────────────────────┤
+│ help    - Show available commands        │
+│ ls      - List available resources       │
+│ cat     - View resource contents         │
+├─ Other Commands ─────────────────────────┤
+│ pwd     - Print working directory        │
+│ clear   - Clear terminal                 │
+│ theme   - Change color theme             │
+│ date    - Show current date and time     │
+│ tree    - Show resource structure        │
+│ whoami  - Show current user              │
+└──────────────────────────────────────────┘`
 // console.log(quantArt);
 
 
