@@ -2,12 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
 import kaggleContent from '../assets/terminal-files/kaggle.md';
-import Resources from "../assets/terminal-files/Resources.md"
-import mathStats from "../assets/terminal-files/math-stats.md"
-import videoCourses from "../assets/terminal-files/video-courses.md"
+import Registration from '../assets/terminal-files/Registration.md';
+import Resources from "../assets/terminal-files/Resources.md";
+import mathStats from "../assets/terminal-files/math-stats.md";
+import videoCourses from "../assets/terminal-files/video-courses.md";
 import ObsidianMarkdown from './ObsidianMarkdown';
-import Introduction from "../assets/terminal-files/Introduction.md"
-import { quantArt, helpArt, anime1, books, combineTextArt } from "./arts"
+import Introduction from "../assets/terminal-files/Introduction.md";
+import guestContent from "../assets/terminal-files/guest.md";
+import quantContent from "../assets/terminal-files/quant.md";
+import contactContent from "../assets/terminal-files/contact.md";
+import rulesContent from "../assets/terminal-files/rules.md";
+import info from "../assets/terminal-files/info.md";
+import { quantArt, helpArt, anime1, books, combineTextArt } from "./arts";
+
+
 // console.log(quantArt);
 
 
@@ -32,7 +40,7 @@ const handleMarkDown = (filename) => {
   }, [filename]);
 
   return markdown;
-}
+};
 
 
 
@@ -49,6 +57,9 @@ const Terminal = () => {
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
   const animationRef = useRef(null);
+
+  // Load markdown content on component mount
+  const [markdownContents, setMarkdownContents] = useState({});;
 
   const fullWelcomeMessage = [
     '',
@@ -67,9 +78,34 @@ const Terminal = () => {
     '• Type "theme" to change colors                               ',
     '• Running on [CPU: Potato Threadripper] [RAM: 128GB DDR5]       ',
     '• Quantum Processing Unit: Active | Qubit Status: Stable      ',
+    '• Paradox Margazhi 2025 presents QUANTAGEDDON                  ',
     '════════════════════════════════════════════════════════════════',
     ''
   ].join('\n');
+
+  useEffect(() => {
+    const loadAllMarkdown = async () => {
+      try {
+        const contents = {
+          registration: await fetch(Registration).then(r => r.text()),
+          guest: await fetch(guestContent).then(r => r.text()),
+          quant: await fetch(quantContent).then(r => r.text()),
+          contact: await fetch(contactContent).then(r => r.text()),
+          rules: await fetch(rulesContent).then(r => r.text()),
+          introduction: await fetch(Introduction).then(r => r.text()),
+          resources: await fetch(Resources).then(r => r.text()),
+          mathStats: await fetch(mathStats).then(r => r.text()),
+          videoCourses: await fetch(videoCourses).then(r => r.text()),
+          info: await fetch(info).then(r => r.text())
+        };
+        setMarkdownContents(contents);
+      } catch (error) {
+        console.error('Error loading markdown contents:', error);
+      }
+    };
+
+    loadAllMarkdown();
+  }, []);
 
   // Scroll to bottom whenever history changes
   useEffect(() => {
@@ -162,19 +198,23 @@ const Terminal = () => {
 
 
   const resources = {
-    'Introduction.md': handleMarkDown(Introduction),
+    'Introduction.md': markdownContents.introduction || '',
+    'Registration.md': markdownContents.registration || '',
+    'guest.md': markdownContents.guest || '',
+    'quant.md': markdownContents.quant || '',
+    'contact.md': markdownContents.contact || '',
+    'rules.md': markdownContents.rules || '',
     books: {
       type: 'directory',
       content: {
-        'Resources.md': handleMarkDown(Resources),
-
-        'math-stats.md': handleMarkDown(mathStats),
+        'Resources.md': markdownContents.resources || '',
+        'math-stats.md': markdownContents.mathStats || '',
       }
     },
     tutorials: {
       type: 'directory',
       content: {
-        'video-courses.txt': handleMarkDown(videoCourses),
+        'video-courses.txt': markdownContents.videoCourses || '',
       }
     },
     repositories: {
@@ -188,7 +228,8 @@ const Terminal = () => {
 
   // Updated commands object with new quant command
   const commands = {
-    quant: () => [...combineTextArt(quantArt.split('\n'), anime1.split('\n')).split('\n')],
+
+
     help: () => [helpArt],
     ls: () => {
       const currentLevel = currentPath === '~' ? resources :
@@ -228,19 +269,34 @@ const Terminal = () => {
       }
       return [`File '${file}' not found`];
     },
-    kaggle: (subCommand) => {
-      try {
-        if (!subCommand) {
-          // If no subcommand provided, show the main kaggle content
-          return [{
-            type: 'markdown',
-            content: kaggleContent
-          }];
-        }
-      } catch (error) {
-        return [`Error loading Kaggle information: ${error.message}`];
-      }
-    },
+
+    info: () => [{
+      type: 'markdown',
+      content: markdownContents.info || 'Loading...'
+    }],
+
+    register: () => [{
+      type: 'markdown',
+      content: markdownContents.registration || 'Loading...'
+    }],
+    guest: () => [{
+      type: 'markdown',
+      content: markdownContents.guest || 'Loading...'
+    }],
+    quant: () => [{
+      type: 'markdown',
+      content: markdownContents.quant || 'Loading...'
+    }],
+    contact: () => [{
+      type: 'markdown',
+      content: markdownContents.contact || 'Loading...'
+    }],
+    rules: () => [{
+      type: 'markdown',
+      content: markdownContents.rules || 'Loading...'
+    }],
+
+
     clear: () => {
       setShowWelcome(false);
       setHistory([]);
