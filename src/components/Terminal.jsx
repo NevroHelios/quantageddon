@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
+import kaggleContent from '../assets/terminal-files/kaggle.md';
 import Resources from "../assets/terminal-files/Resources.md"
 import mathStats from "../assets/terminal-files/math-stats.md"
 import videoCourses from "../assets/terminal-files/video-courses.md"
@@ -214,6 +215,7 @@ const Terminal = () => {
       }
       return [`Directory '${dir}' not found`];
     },
+
     cat: (file) => {
       const currentLevel = currentPath === '~' ? resources :
         currentPath.split('/').slice(1).reduce((acc, curr) => acc[curr].content, resources);
@@ -225,6 +227,19 @@ const Terminal = () => {
         }];
       }
       return [`File '${file}' not found`];
+    },
+    kaggle: (subCommand) => {
+      try {
+        if (!subCommand) {
+          // If no subcommand provided, show the main kaggle content
+          return [{
+            type: 'markdown',
+            content: kaggleContent
+          }];
+        }
+      } catch (error) {
+        return [`Error loading Kaggle information: ${error.message}`];
+      }
     },
     clear: () => {
       setShowWelcome(false);

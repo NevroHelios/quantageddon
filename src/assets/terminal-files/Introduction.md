@@ -8,6 +8,23 @@
 
 ---
 
+## How Do You Start?  
+
+1. **Join the kaggle competition**:  
+   [Quantageddon Kaggle Comp](https://www.kaggle.com/competitions/jane-street-real-time-market-data-forecasting)  
+
+2. **Connect on Discord**:  
+   [Find step-by-step guidance right here!](https://discord.com/invite/xNtTUe9Euk)  
+
+3. **Get Ready**:  
+   - Set up Python and Kaggle on your laptop.  
+   - Familiarize yourself with financial data and machine learning.  
+
+4. **Ask for Help**:  
+   Use our Discord channel for queries or assistance. 
+
+---
+
 ## PRIZE POOL ALERT  
 
 **Win big while learning big!** Here’s what’s up for grabs:  
@@ -18,6 +35,7 @@
 - **6th-10th Places**: ₹500 Gift Vouchers  
 
 ---
+
 
 ## WHY SHOULD YOU CARE? GREED IS GOOD (THE RIGHT KIND!)  
 
@@ -99,23 +117,7 @@ Anyone who’s:
 ### Soft Skills:  
 - A passion for learning.  
 - Willingness to explore new ideas.  
-
----
-
-## How Do You Start?  
-
-1. **Join the Event Discord**:  
-   [Click Here to Connect with Us!](https://discord.com/invite/xNtTUe9Euk)  
-
-2. **Sign Up on Kaggle**:  
-   Once registered, you’ll receive the competition link.  
-
-3. **Get Ready**:  
-   - Set up Python and Kaggle on your laptop.  
-   - Familiarize yourself with financial data and machine learning.  
-
-4. **Ask for Help**:  
-   Use our Discord channel for queries or assistance.  
+ 
 
 ---
 
