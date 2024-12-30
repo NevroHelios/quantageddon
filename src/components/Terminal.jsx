@@ -115,7 +115,8 @@ const Terminal = () => {
           resources: await fetch(Resources).then(r => r.text()),
           mathStats: await fetch(mathStats).then(r => r.text()),
           videoCourses: await fetch(videoCourses).then(r => r.text()),
-          info: await fetch(info).then(r => r.text())
+          info: await fetch(info).then(r => r.text()),
+          kaggleContent: await fetch(kaggleContent).then(r => r.text())
         };
         setMarkdownContents(contents);
       } catch (error) {
@@ -223,6 +224,7 @@ const Terminal = () => {
     'quant.md': markdownContents.quant || '',
     'contact.md': markdownContents.contact || '',
     'rules.md': markdownContents.rules || '',
+    'kaggle.md': markdownContents.kaggleContent || '',
     books: {
       type: 'directory',
       content: {
@@ -288,6 +290,11 @@ const Terminal = () => {
       }
       return [`File '${file}' not found`];
     },
+
+    kaggle: () => [{
+      type: 'markdown',
+      content: markdownContents.kaggleContent || 'Loading...'
+    }],
 
     info: () => [{
       type: 'markdown',

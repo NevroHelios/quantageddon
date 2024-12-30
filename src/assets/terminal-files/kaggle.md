@@ -11,7 +11,7 @@
 ## How Do You Start?  
 
 1. **Join the kaggle competition**:  
-   [Quantageddon Kaggle Comp](https://www.kaggle.com/competitions/jane-street-real-time-market-data-forecasting)  
+   [Quantageddon Kaggle Comp](https://www.kaggle.com/competitions/notlive)  
 
 2. **Connect on Discord**:  
    [Find step-by-step guidance right here!](https://discord.com/invite/xNtTUe9Euk)  
