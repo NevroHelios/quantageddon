@@ -122,7 +122,7 @@ const SearchInterface = (props) => {
             style={{ backfaceVisibility: 'hidden' }}
           >
             <header className="w-full p-4 flex justify-end items-center space-x-4">
-              <a href={REDIRECT_URL} className="text-[#999da2] hover:text-white text-sm transition-colors duration-200">Mail</a>
+              <a href="https://www.iitmparadox.org/events/register/41" className="text-[#999da2] hover:text-white text-sm transition-colors duration-200">Register</a>
               <a href={REDIRECT_URL} className="text-[#999da2] hover:text-white text-sm transition-colors duration-200">Images</a>
               <button onClick={() => window.location.href = REDIRECT_URL} className="w-10 h-10 flex items-center justify-center hover:bg-[#303134] rounded-full transition-colors duration-200">
                 <Grid className="w-5 h-5 text-[#999da2]" />
