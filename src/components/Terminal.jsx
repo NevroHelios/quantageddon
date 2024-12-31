@@ -218,13 +218,6 @@ const Terminal = () => {
 
 
   const resources = {
-    'Introduction.md': markdownContents.introduction || '',
-    'Registration.md': markdownContents.registration || '',
-    'guest.md': markdownContents.guest || '',
-    'quant.md': markdownContents.quant || '',
-    'contact.md': markdownContents.contact || '',
-    'rules.md': markdownContents.rules || '',
-    'kaggle.md': markdownContents.kaggleContent || '',
     books: {
       type: 'directory',
       content: {
