@@ -361,7 +361,43 @@ const Terminal = () => {
         return ['Opening Quantageddon.com...'];
       }
       return ['Usage: open quantageddon.com'];
+    },
+    ask: (...question) => {
+      if (question.join(' ') == ' ') {
+        return ["sed lyf"];
+      }
+
+      const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      
+      if (!geminiApiKey) {
+        return ['Missing Gemini API key'];
+      }
+
+      fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${geminiApiKey}`
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: question.join(' ')
+            }]
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        return [data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer from Gemini'];
+      })
+      .catch(error => {
+        return [`Error: ${error.message}`];
+      });
+
+      return ['Processing your question...'];
     }
+    
   };
 
   const getSuggestions = (inputValue) => {
