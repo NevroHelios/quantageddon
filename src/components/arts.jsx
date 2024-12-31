@@ -84,4 +84,4 @@ let books = String.raw`              .__=\__                  .__==__,
 // console.log(books);
 
 
-export { quantArt, helpArt, anime1, books, combineTextArt };
+export { anime1, books, combineTextArt };

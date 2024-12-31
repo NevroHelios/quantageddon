@@ -129,9 +129,9 @@ const Terminal = () => {
 
   // Scroll to bottom whenever history changes
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
+    // if (terminalRef.current) {
+    //   terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    // }
 
     // Add input event listener to input ref
     const inputElement = inputRef.current;
@@ -140,11 +140,11 @@ const Terminal = () => {
     }
 
     // Cleanup
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener('input', scrollToBottom);
-      }
-    };
+    // return () => {
+    //   if (inputElement) {
+    //     inputElement.removeEventListener('input', scrollToBottom);
+    //   }
+    // };
   }, [history]);
 
   // Keep input focused
@@ -301,17 +301,17 @@ const Terminal = () => {
       content: markdownContents.info || 'Loading...'
     }],
 
-    register: () => [{
-      type: 'markdown',
-      content: markdownContents.registration || 'Loading...'
-    }],
+    register: () => {
+      window.open("https://www.iitmparadox.org/events/41", "_blank");
+      return ["Opening Registration Page..."];
+  },
     guest: () => [{
       type: 'markdown',
       content: markdownContents.guest || 'Loading...'
     }],
     quant: () => [{
       type: 'markdown',
-      content: markdownContents.quant || 'Loading...'
+      content: "Never gonna give you up, never gonna let you down"
     }],
     contact: () => [{
       type: 'markdown',
