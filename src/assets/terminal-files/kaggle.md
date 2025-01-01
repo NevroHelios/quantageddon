@@ -11,7 +11,7 @@
 ## How Do You Start?  
 
 1. **Join the kaggle competition**:  
-   [Quantageddon Kaggle Comp](https://www.kaggle.com/competitions/notlive)  
+   [Quantageddon Kaggle Comp](https://www.kaggle.com/t/4a769ac0575c4a07a14e7964958a54ad)  
 
 2. **Connect on Discord**:  
    [Find step-by-step guidance right here!](https://discord.com/invite/xNtTUe9Euk)  
