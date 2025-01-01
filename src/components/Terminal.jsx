@@ -63,6 +63,9 @@ const handleMarkDown = (filename) => {
 
 
 
+
+
+
 const Terminal = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
@@ -76,9 +79,12 @@ const Terminal = () => {
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
   const animationRef = useRef(null);
-
+  const lastOutputWasMarkdown = useRef(false);
   // Load markdown content on component mount
-  const [markdownContents, setMarkdownContents] = useState({});;
+  const [markdownContents, setMarkdownContents] = useState({});
+
+
+
 
   const fullWelcomeMessage = [
     '',
@@ -127,24 +133,11 @@ const Terminal = () => {
     loadAllMarkdown();
   }, []);
 
+
   // Scroll to bottom whenever history changes
   useEffect(() => {
-    // if (terminalRef.current) {
-    //   terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    // }
-
-    // Add input event listener to input ref
-    const inputElement = inputRef.current;
-    if (inputElement) {
-      inputElement.addEventListener('input', scrollToBottom);
-    }
-
-    // Cleanup
-    // return () => {
-    //   if (inputElement) {
-    //     inputElement.removeEventListener('input', scrollToBottom);
-    //   }
-    // };
+    const shouldScroll = !history[history.length - 1]?.type === 'markdown';
+    scrollToBottom(shouldScroll);
   }, [history]);
 
   // Keep input focused
@@ -297,7 +290,7 @@ const Terminal = () => {
     register: () => {
       window.open("https://www.iitmparadox.org/events/41", "_blank");
       return ["Opening Registration Page..."];
-  },
+    },
     guest: () => [{
       type: 'markdown',
       content: markdownContents.guest || 'Loading...'
@@ -368,7 +361,7 @@ const Terminal = () => {
       }
 
       const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      
+
       if (!geminiApiKey) {
         return ['Missing Gemini API key'];
       }
@@ -387,17 +380,17 @@ const Terminal = () => {
           }]
         })
       })
-      .then(response => response.json())
-      .then(data => {
-        return [data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer from Gemini'];
-      })
-      .catch(error => {
-        return [`Error: ${error.message}`];
-      });
+        .then(response => response.json())
+        .then(data => {
+          return [data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer from Gemini'];
+        })
+        .catch(error => {
+          return [`Error: ${error.message}`];
+        });
 
       return ['Processing your question...'];
     }
-    
+
   };
 
   const getSuggestions = (inputValue) => {
@@ -424,6 +417,11 @@ const Terminal = () => {
       ? commands[command](...args)
       : [`Command '${command}' not found. Type 'help' for available commands`];
 
+    // Check if the output contains markdown
+    lastOutputWasMarkdown.current = output.some(line =>
+      typeof line === 'object' && line?.type === 'markdown'
+    );
+
     // Flatten output array to remove empty lines
     output = output.filter(line => line !== '');
 
@@ -435,10 +433,6 @@ const Terminal = () => {
 
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
-
-    if (inputRef.current) {
-      inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
   };
 
   const renderOutput = (line) => {
@@ -480,6 +474,7 @@ const Terminal = () => {
         const args = input.split(' ');
         args[args.length - 1] = matches[0];
         setInput(args.join(' '));
+        scrollToBottom(true);
       } else if (matches.length > 0) {
         setSuggestions(matches);
         setShowSuggestions(true);
@@ -490,6 +485,7 @@ const Terminal = () => {
         const newIndex = historyIndex + 1;
         setHistoryIndex(newIndex);
         setInput(commandHistory[commandHistory.length - 1 - newIndex]);
+        scrollToBottom(true);
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -497,6 +493,7 @@ const Terminal = () => {
         const newIndex = historyIndex - 1;
         setHistoryIndex(newIndex);
         setInput(commandHistory[commandHistory.length - 1 - newIndex]);
+        scrollToBottom(true);
       } else if (historyIndex === 0) {
         setHistoryIndex(-1);
         setInput('');
@@ -511,16 +508,17 @@ const Terminal = () => {
   };
 
   // Add this new function
-  const scrollToBottom = () => {
-    if (terminalRef.current) {
+  const scrollToBottom = (force = false) => {
+    if (terminalRef.current && (!lastOutputWasMarkdown.current || force)) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   };
 
   // Modify your input handler to include scrolling
   const handleInput = (e) => {
-    // ...existing input handling code...
-    scrollToBottom();
+    setInput(e.target.value);
+    lastOutputWasMarkdown.current = false; // Reset on new input
+    scrollToBottom(true);
   };
 
   return (
@@ -529,21 +527,27 @@ const Terminal = () => {
       className={`${themes[theme].bg} p-4 font-mono h-screen overflow-y-auto`}
       onClick={() => inputRef.current?.focus()}
     >
-      <div className="mb-4">
+      {/* Terminal History */}
+      <div className="mb-4 space-y-1">
         {history.map((line, i) => (
-          <div key={`history-${i}`}>
+          <div key={`history-${i}`} className="min-h-[1.2em]">
             {renderOutput(line)}
           </div>
         ))}
       </div>
 
-      <div className="flex items-center sticky bottom-0 bg-opacity-90 py-2">
+      {/* Command Input Area */}
+      <div className="flex items-center sticky bottom-0 bg-opacity-90 py-2 backdrop-blur-sm">
         <span className={`mr-2 ${themes[theme].prompt}`}>{currentPath} $</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            lastOutputWasMarkdown.current = false;
+            scrollToBottom(true);
+          }}
           onKeyDown={handleKeyDown}
           className={`bg-transparent border-none outline-none flex-grow ${themes[theme].text} caret-current`}
           autoFocus
@@ -552,8 +556,11 @@ const Terminal = () => {
         />
       </div>
 
+      {/* Command Suggestions */}
       {showSuggestions && suggestions.length > 0 && (
-        <div className={`mt-2 p-2 rounded ${themes[theme].bg} border ${themes[theme].border} sticky bottom-16`}>
+        <div
+          className={`mt-2 p-2 rounded ${themes[theme].bg} border ${themes[theme].border} sticky bottom-16 backdrop-blur-sm`}
+        >
           <div className={`${themes[theme].text} flex flex-wrap gap-2`}>
             {suggestions.map((suggestion, index) => (
               <span
@@ -565,6 +572,7 @@ const Terminal = () => {
                   setInput(args.join(' '));
                   setShowSuggestions(false);
                   inputRef.current?.focus();
+                  scrollToBottom(true);
                 }}
               >
                 {suggestion}
@@ -574,20 +582,26 @@ const Terminal = () => {
         </div>
       )}
 
-      {/* Command history preview */}
+      {/* Command History Preview */}
       {historyIndex >= 0 && (
-        <div className={`absolute bottom-16 right-4 ${themes[theme].text} opacity-50`}>
+        <div
+          className={`absolute bottom-16 right-4 ${themes[theme].text} opacity-50 backdrop-blur-sm`}
+        >
           History: {commandHistory.length - historyIndex}/{commandHistory.length}
         </div>
       )}
 
-      {/* Theme indicator */}
-      <div className={`fixed top-4 right-4 ${themes[theme].text} opacity-50 text-sm`}>
+      {/* Theme Indicator */}
+      <div
+        className={`fixed top-4 right-4 ${themes[theme].text} opacity-50 text-sm backdrop-blur-sm`}
+      >
         Theme: {theme}
       </div>
 
-      {/* Help hint */}
-      <div className={`fixed bottom-4 right-4 ${themes[theme].text} opacity-50 text-sm`}>
+      {/* Help Hint */}
+      <div
+        className={`fixed bottom-4 right-4 ${themes[theme].text} opacity-50 text-sm backdrop-blur-sm`}
+      >
         Type 'help' for commands
       </div>
     </div>
