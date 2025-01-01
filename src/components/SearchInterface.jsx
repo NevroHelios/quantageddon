@@ -177,7 +177,7 @@ const SearchInterface = (props) => {
                     onClick={() => window.open("https://discord.gg/xNtTUe9Euk", "_blank")}
                     className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200"
                   >
-                    Quant Search
+                    Quant Discord
                   </button>
                   <button onClick={() => window.location.href = REDIRECT_URL} className="px-6 py-2 bg-[#303134] text-[#e8eaed] text-sm rounded-md hover:border-[#5f6368] border border-transparent ring-offset-2 focus:outline-none focus:ring-2 focus:ring-[#8ab4f8] transition-all duration-200">
                     I'm Feeling Lucky
