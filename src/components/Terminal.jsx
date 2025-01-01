@@ -282,6 +282,11 @@ const Terminal = () => {
       content: markdownContents.kaggleContent || 'Loading...'
     }],
 
+    Kaggle: () => [{
+      type: 'markdown',
+      content: markdownContents.kaggleContent || 'Loading...'
+    }],
+    
     info: () => [{
       type: 'markdown',
       content: markdownContents.info || 'Loading...'
